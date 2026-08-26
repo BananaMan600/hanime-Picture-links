@@ -21,7 +21,7 @@ from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
 
-DEFAULT_URL = "https://hanime.tv/browse/images?channels=nsfw-general"
+DEFAULT_URL = "https://hanime.tv/browse/images"
 DEFAULT_OUTPUT = "picture_links.txt"
 DEFAULT_PAGE_SIZE = 96
 DEFAULT_BROWSER_PROFILE = Path(".browser-profile")
