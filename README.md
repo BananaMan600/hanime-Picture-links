@@ -1,7 +1,7 @@
 # hanime.tv image link downloader
 
 A small command-line downloader that collects image URLs from a hanime.tv
-community-images channel and saves them as a newline-separated text file. 
+community-images channel and saves them as a newline-separated text file.
 
 ## Requirements
 
@@ -21,7 +21,7 @@ python -m playwright install chromium
 Run the default channel with a deliberately conservative delay:
 
 ```powershell
-python linkDownloader.py --output picture_links.txt
+python linkDownloader.py --delay 5 --output picture_links.txt
 ```
 
 Useful options:
@@ -33,7 +33,15 @@ Useful options:
 --size COUNT          Images requested per page (default: 96)
 --max-pages COUNT     Stop after COUNT pages; useful for testing
 --update              Keep existing links and stop at known content
+--new-links PATH      With --update, also write only newly found links to PATH
 --browser             Use a visible Playwright browser session
+```
+
+To keep the complete updated list and also save only the links found in this
+run, use `--new_links` together with `--update`:
+
+```powershell
+python linkDownloader.py --update --output picture_links.txt --new_links new_links.txt
 ```
 
 For a site session that needs browser interaction, use:

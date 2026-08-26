@@ -278,17 +278,20 @@ def parse_args() -> argparse.Namespace:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--url", default=DEFAULT_URL, help="First browse-images URL")
 	parser.add_argument("--output", default=DEFAULT_OUTPUT, type=Path, help="Output txt file")
-	parser.add_argument("--delay", default=5, type=float, help="Seconds between pages")
+	parser.add_argument("--delay", default=0.5, type=float, help="Seconds between pages")
 	parser.add_argument("--max-pages", type=int, help="Optional limit for testing")
 	parser.add_argument("--browser", action="store_true", help="Use a visible browser so Cloudflare checks can be completed manually",)
 	parser.add_argument("--size", default=DEFAULT_PAGE_SIZE, type=int, help="Images requested per page (default: 96)",)
 	parser.add_argument("--update",	action="store_true", help="Merge new links into an existing output file and stop at known links",)
+	parser.add_argument("--new-links", type=Path, help="Write links found during update to a separate txt file",)
 	return parser.parse_args()
 
 
 def main() -> None:
 	try:
 		args = parse_args()
+		if args.new_links is not None and not args.update:
+			raise RuntimeError("--new-links can only be used together with --update")
 		existing_links: list[str] = []
 		if args.update and args.output.exists():
 			existing_links = [
@@ -308,11 +311,19 @@ def main() -> None:
 		else:
 			links = scrape(**scrape_args)
 		existing_set = set(existing_links)
-		merged_links = existing_links + [link for link in links if link not in existing_set]
+		new_links = [link for link in links if link not in existing_set]
+		merged_links = existing_links + new_links
 		args.output.write_text(
 			"\n".join(merged_links) + ("\n" if merged_links else ""), encoding="utf-8"
 		)
 		print(f"Saved {len(merged_links)} unique image links to {args.output}")
+		if args.new_links is not None:
+			args.new_links.write_text(
+				"\n".join(new_links) + ("\n" if new_links else ""), encoding="utf-8"
+			)
+			print(f"Saved {len(new_links)} new image links to {args.new_links}")
+			print("")
+		
 	except RuntimeError as error:
 		print(f"Error: {error}", file=sys.stderr)
 		raise SystemExit(1) from None
