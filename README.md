@@ -21,11 +21,7 @@ python -m playwright install chromium
 Run the default channel with a deliberately conservative delay:
 
 ```powershell
-<<<<<<< HEAD
 python linkDownloader.py --url https://hanime.tv/browse/images?channels=nsfw-general --output nsfw-general_links.txt
-=======
-python linkDownloader.py --output picture_links.txt
->>>>>>> 9ab9898ee550758bdcc9c2f0bddc0df1184c6744
 ```
 
 Useful options:
