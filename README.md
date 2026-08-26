@@ -21,7 +21,7 @@ python -m playwright install chromium
 Run the default channel with a deliberately conservative delay:
 
 ```powershell
-python linkDownloader.py --delay 5 --output picture_links.txt
+python linkDownloader.py --output picture_links.txt
 ```
 
 Useful options:
@@ -29,7 +29,7 @@ Useful options:
 ```text
 --url URL             First browse-images URL
 --output PATH         Output file (default: picture_links.txt)
---delay SECONDS       Pause between pages
+--delay SECONDS       Pause between pages (default 0.5 seconds)
 --size COUNT          Images requested per page (default: 96)
 --max-pages COUNT     Stop after COUNT pages; useful for testing
 --update              Keep existing links and stop at known content
